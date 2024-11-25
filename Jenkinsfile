@@ -12,9 +12,11 @@ pipeline {
         BRANCH = 'master'
         RENDER_API_KEY = credentials('render-api-key')  // API Key stored as a Jenkins secret
         RENDER_SERVICE_ID = 'srv-ct26gbdsvqrc73e58lj0'  // Service ID from Render
+        EMAIL_RECIPIENTS = 'ann.wahome@student.moringaschool.com'
     }
 
     stages {
+
         stage('Checkout') {
             steps {
                                git url: "${GITHUB_REPO}", credentialsId: 'github-credentials', branch: "${BRANCH}"
@@ -52,13 +54,35 @@ pipeline {
                 }
             }
         }
+         stage('Run Tests') {
+            steps {
+                script {
+                    // Run your tests
+                    def testResult = sh(script: 'npm test', returnStatus: true)
+                    
+                    if (testResult != 0) {
+                        currentBuild.result = 'FAILURE'
+                        error "Tests failed"
+                    }
+                }
+            }
+        }
     }
     post {
+        always {
+            // Always run
+            echo 'Cleaning up...'
+        }
         success {
-            echo 'Deployment Successful'
+            // Actions if successful
+            echo 'Build and tests passed!'
         }
         failure {
-            echo 'Deployment Failed'
+            // Send an email if the tests fail
+            echo 'Build failed!'
+            mail to: "${EMAIL_RECIPIENTS}",
+                 subject: "Jenkins Build Failed: ${currentBuild.fullDisplayName}",
+                 body: "The build failed due to failing tests. Please check the logs for details."
         }
     }
 }
