@@ -10,12 +10,10 @@ pipeline {
     }
 
     stages {
-        stage('Check npm and node version') {
+        stage('Checkout') {
             steps {
-                script {
-                    sh 'npm --version'
-                    sh 'node --version'
-                }
+               
+                    git url: 'https://github.com/AnnWahome/gallery.git', credentialsId: 'github-credentials', branch: 'main'  
             }
         }
 
@@ -53,3 +51,4 @@ pipeline {
         }
     }
 }
+
