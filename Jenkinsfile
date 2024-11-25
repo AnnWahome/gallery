@@ -3,7 +3,7 @@ pipeline {
 
     tools {
         nodejs 'NodeJS'  // NodeJS tool setup for running npm
-        git 'Default'    // Default git tool
+        //git 'Default'    // Default git tool
     }
 
     environment {
