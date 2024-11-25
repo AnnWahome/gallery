@@ -36,16 +36,19 @@ pipeline {
         stage('Deploy to Render') {
             steps {
                 script {
-                    sh """
-                        curl -X POST \
-                             -H "Authorization: Bearer ${RENDER_API_KEY}" \
-                             -H "Content-Type: application/json" \
-                             -d '{
-                                "service_id": "${RENDER_SERVICE_ID}",
-                                "branch": "${BRANCH}"
-                             }' \
-                             https://api.render.com/v1/services/${RENDER_SERVICE_ID}/deployments
-                    """
+                     def deployResponse = sh(script: """
+                        curl -X POST https://api.render.com/v1/services/${RENDER_SERVICE_ID}/deploys \
+                            -H "Authorization: Bearer ${RENDER_API_KEY}" \
+                            -d '{"clear_cache": false}' \
+                            -w "%{http_code}" -s
+                    """, returnStdout: true).trim()
+
+                    // Check the response code to verify success
+                    if (deployResponse == '200') {
+                        echo "Deployment triggered successfully."
+                    } else {
+                        error "Deployment failed with response code: ${deployResponse}"
+                    }
                 }
             }
         }
