@@ -5,10 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-    /*Added here
-    , "start": "node server.js",
-  "build": "webpack --config webpack.config.js"*/
-  },
+    },
   "keywords": [],
   "author": "",
   "license": "ISC",
