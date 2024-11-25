@@ -4,7 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "mocha --exit"
+    "test": "mocha --exit",
+    "start": "node server.js",
+    "build": "echo 'No build step required for Node.js backend'"
   },
   "keywords": [],
   "author": "",
