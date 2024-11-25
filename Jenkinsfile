@@ -3,6 +3,7 @@ pipeline {
 
     tools {
         nodejs 'NodeJS'
+        git 'Git'
     }
 
     environment {
@@ -13,7 +14,7 @@ pipeline {
         stage('Checkout') {
             steps {
                
-                    git url: 'https://github.com/AnnWahome/gallery.git', credentialsId: 'github-credentials', branch: 'main'  
+                    git url: 'https://github.com/AnnWahome/gallery.git', credentialsId: 'github-credentials', branch: 'master'  
             }
         }
 
